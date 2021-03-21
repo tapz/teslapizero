@@ -1,0 +1,19 @@
+{
+  "name": "teslapizero",
+  "author": "Tapani Saarinen",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node index",
+    "openChargePort": "node -e 'require(\"./teslaService\").openChargePort()'",
+    "login": "node login"
+  },
+  "dependencies": {
+    "onoff": "6.0.1",
+    "teslajs": "4.9.8"
+  },
+  "devDependencies": {
+    "eslint": "7.22.0"
+  }
+}
+
