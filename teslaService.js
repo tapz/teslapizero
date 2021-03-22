@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const tesla = require('teslajs');
+const log = require('./logger');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -14,25 +15,27 @@ async function openChargePort() {
 
     const tokens = JSON.parse(json);
     if (!tokens) {
-      console.log('Invalid tokens file.');
+      log.error('Invalid tokens file.');
       return;
     }
 
+    log.info('Get vehicle...');
+
     const vehicle = await tesla.vehicleAsync(tokens);
     if (!vehicle) {
-      console.log('No vehicle.');
+      log.error('No vehicle.');
       return;
     }
-    console.log(`Vehicle: ${JSON.stringify(vehicle.vin)}`);
+    log.info(`Vehicle: ${JSON.stringify(vehicle.vin)}`);
 
     const options = { ...tokens, vehicleID: vehicle.id_s };
 
     const chargeState = await tesla.chargeStateAsync(options);
-    console.log('Charge port latch: ' + JSON.stringify(chargeState.charge_port_latch));
-    console.log('Charging state: ' + JSON.stringify(chargeState.charging_state));
+    log.info('Charge port latch: ' + JSON.stringify(chargeState.charge_port_latch));
+    log.info('Charging state: ' + JSON.stringify(chargeState.charging_state));
     
     if (vehicle.state !== 'online') {
-      console.log('Vehicle offline. Waking up...');
+      log.info('Vehicle offline. Waking up...');
       await tesla.wakeUpAsync(options);
     }
 
@@ -48,22 +51,22 @@ async function openChargePort() {
           const cs = await tesla.chargeStateAsync(options);
           
           if (cs.charging_state === 'Stopped') {
-            console.log('Charging stopped.');
+            log.info('Charging stopped.');
             break;
           }
         }
       }
 
-      console.log('Open charging port...');
+      log.info('Open charging port...');
 
       await tesla.openChargePortAsync(options);
       await tesla.flashLightsAsync(options);
     } else {
       if (chargeState.charge_port_door_open && chargeState.charging_state === 'Disconnected') {
-        console.log('Close charge port...');
+        log.info('Close charge port...');
         await tesla.closeChargePortAsync(options);
       } else {
-        console.log('Start charging...');
+        log.info('Start charging...');
         await tesla.startChargeAsync(options);
       }
       
@@ -71,10 +74,10 @@ async function openChargePort() {
     }
 
     const chargeStateAfter = await tesla.chargeStateAsync(options);
-    console.log('Charge port latch: ' + JSON.stringify(chargeStateAfter.charge_port_latch));
-    console.log('Charging state: ' + JSON.stringify(chargeStateAfter.charging_state));
+    log.info('Charge port latch: ' + JSON.stringify(chargeStateAfter.charge_port_latch));
+    log.info('Charging state: ' + JSON.stringify(chargeStateAfter.charging_state));
   } catch (e) {
-    console.log('Error: ', e);
+    log.error('Tesla API failed: ', e);
   }
 }
 
