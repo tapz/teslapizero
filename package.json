@@ -4,9 +4,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "eslint": "./node_modules/eslint/bin/eslint.js .",
     "start": "node index",
     "openChargePort": "node -e 'require(\"./teslaService\").openChargePort()'",
-    "login": "node login"
+    "login": "node login",
+    "lint": "jshint .",
+    "validate": "npm ls"
   },
   "dependencies": {
     "onoff": "^6.0.1",
@@ -15,6 +18,14 @@
     "winston-daily-rotate-file": "^4.5.1"
   },
   "devDependencies": {
-    "eslint": "^7.22.0"
-  }
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.22.0",
+    "eslint-plugin-require-path-exists": "^1.1.9",
+    "precommit-hook": "^3.0.0",
+    "typescript": "^4.2.2"
+  },
+  "pre-commit": [
+    "eslint"
+  ]
 }

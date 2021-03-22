@@ -7,8 +7,8 @@ require('winston-daily-rotate-file');
 const formatArg = args =>
   args.map(arg => arg.stack || JSON.stringify(arg)).join('\n');
 
-const myFormat = printf(({ level, message, timestamp, args }) => 
-  `${timestamp} ${level} ${message} ${formatArg(args)}`);
+const myFormat = printf(({ level, message, time, args }) => 
+  `${time} ${level} ${message} ${formatArg(args)}`);
 
 const logger = createLogger({
   level: 'info',

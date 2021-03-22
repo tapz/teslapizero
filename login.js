@@ -18,12 +18,12 @@ async function login(username, password, mfaPassCode) {
       process.exit(1);
     }
 
-    console.log('Auth token: ' + result.authToken);
-    console.log('Refresh token: ' + result.refreshToken);
+    console.log('Auth token: ' + res.authToken);
+    console.log('Refresh token: ' + res.refreshToken);
 
     const tokens = {
-      authToken: result.authToken,
-      refreshToken: result.refreshToken
+      authToken: res.authToken,
+      refreshToken: res.refreshToken
     };
 
     const vehicles = await tesla.vehiclesAsync(tokens);

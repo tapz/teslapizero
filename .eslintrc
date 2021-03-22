@@ -1,0 +1,68 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:require-path-exists/recommended"
+  ],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 10,
+    "sourceType": "module"
+  },
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "keyword-spacing": [1, { "before": true }],
+    "key-spacing": [1, { "afterColon": true }],
+    "consistent-return": 1,
+    "no-unexpected-multiline": 1,
+    "no-extra-boolean-cast": 1,
+    "no-return-await": 1,
+    "no-irregular-whitespace": 1,
+    "no-mixed-spaces-and-tabs": 1,
+    "semi": [1, "always"],
+    "no-unused-vars": [
+      1,
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ],
+    "no-var": 1,
+    "eqeqeq": 1,
+    "dot-notation": 1,
+    "no-caller": 2,
+    "no-eval": 2,
+    "no-extend-native": 2,
+    "no-implied-eval": 2,
+    "no-shadow": [
+      2,
+      {
+        "allow": ["err"]
+      }
+    ],
+    "quotes": [1, "single"],
+    "no-multi-spaces": 1,
+    "no-multiple-empty-lines": 1,
+    "prefer-arrow-callback": 1,
+    "require-atomic-updates": 0,
+    "space-infix-ops": 1,
+    "space-unary-ops": 1,
+    "comma-spacing": 1,
+    "curly": 1,
+    "@typescript-eslint/prefer-optional-chain": "warn"
+  },
+  "plugins": ["require-path-exists", "@typescript-eslint/eslint-plugin"],
+  "globals": {
+    "after": true,
+    "afterEach": true,
+    "before": true,
+    "beforeEach": true,
+    "describe": true,
+    "it": true,
+    "beforeAll": true,
+    "test": true
+  }
+}
