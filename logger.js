@@ -13,12 +13,17 @@ const myFormat = printf(({ level, message, timestamp, args }) =>
 const logger = createLogger({
   level: 'info',
   format: combine(
-    colorize(),
     timestamp(),
     myFormat
   ),
   transports: [
-    new transports.Console(),
+    new transports.Console({
+      format: combine(
+        colorize(),
+        timestamp(),
+        myFormat
+      )
+    }),
     new transports.DailyRotateFile({
       filename: 'teslapizero.log',
       frequency: '1w',

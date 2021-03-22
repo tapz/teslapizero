@@ -13,33 +13,23 @@ async function openChargePort() {
       encoding: 'utf8'
     });
 
-    const tokens = JSON.parse(json);
-    if (!tokens) {
+    const options = JSON.parse(json);
+    if (!options) {
       log.error('Invalid tokens file.');
       return;
     }
 
-    log.info('Get vehicle...');
-
-    const vehicle = await tesla.vehicleAsync(tokens);
-    if (!vehicle) {
-      log.error('No vehicle.');
-      return;
-    }
-    log.info(`Vehicle: ${JSON.stringify(vehicle.vin)}`);
-
-    const options = { ...tokens, vehicleID: vehicle.id_s };
+    tesla.wakeUpAsync(options).catch(e => {
+      log.error('Failed to wake-up vehicle.', e);
+    });
+    
+    log.info('Get charge state...');
 
     const chargeState = await tesla.chargeStateAsync(options);
     log.info('Charge port latch: ' + JSON.stringify(chargeState.charge_port_latch));
     log.info('Charging state: ' + JSON.stringify(chargeState.charging_state));
     
-    if (vehicle.state !== 'online') {
-      log.info('Vehicle offline. Waking up...');
-      await tesla.wakeUpAsync(options);
-    }
-
-    if (chargeState.charge_port_latch === 'Engaged') {
+    if (chargeState.charge_port_latch === 'Engaged' && chargeState.charging_state !== 'Disconnected') {
       if (chargeState.charging_state === 'Charging' || chargeState.charging_state === 'Starting') {
         console.log('Stop charging...');
         await tesla.stopChargeAsync(options);
@@ -57,14 +47,19 @@ async function openChargePort() {
         }
       }
 
-      log.info('Open charging port...');
+      log.info('Release charge port latch...');
 
       await tesla.openChargePortAsync(options);
       await tesla.flashLightsAsync(options);
     } else {
-      if (chargeState.charge_port_door_open && chargeState.charging_state === 'Disconnected') {
-        log.info('Close charge port...');
-        await tesla.closeChargePortAsync(options);
+      if (chargeState.charging_state === 'Disconnected') {
+        if (chargeState.charge_port_door_open) {
+          log.info('Close charge port...');
+          await tesla.closeChargePortAsync(options);
+        } else {
+          log.info('Open charge port...');
+          await tesla.openChargePortAsync(options);
+        }
       } else {
         log.info('Start charging...');
         await tesla.startChargeAsync(options);

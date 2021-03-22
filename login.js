@@ -1,6 +1,7 @@
 // Copyright (c) 2021 Tapani Saarinen
 'use strict';
 
+const log = require('./logger');
 const fs = require('fs');
 const tesla = require('teslajs');
 
@@ -20,12 +21,31 @@ async function login(username, password, mfaPassCode) {
     console.log('Auth token: ' + result.authToken);
     console.log('Refresh token: ' + result.refreshToken);
 
-    fs.writeFileSync('tokens.json', JSON.stringify({
+    const tokens = {
       authToken: result.authToken,
       refreshToken: result.refreshToken
-    }));
+    };
+
+    const vehicles = await tesla.vehiclesAsync(tokens);
+    if (!vehicles || vehicles.length === 0) {
+      log.error('No vehicles.');
+      return;
+    }
+
+    vehicles.forEach((vehicle, i) => {
+      console.log(`${i}: ${vehicle.vin} - ${vehicle.display_name}`);
+    });
+
+    rl.question('Car index: ', index => {
+      fs.writeFileSync('tokens.json', JSON.stringify({
+        ...tokens,
+        vehicleID: vehicles[index].id
+      }));
+    });
   } catch (e) {
-    console.log('Login failed: ', e);
+    log.error('Login failed: ', e);
+  } finally {
+    rl.close();
   }
 }
 
@@ -35,10 +55,10 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question("E-mail: ", email => {
-  rl.question("Password: ", password => {
-    rl.question("MFA code: ", async mfaPassCode => {
-      rl.close();
+rl.question('E-mail: ', email => {
+  rl.question('Password: ', password => {
+    rl.question('MFA code: ', async mfaPassCode => {
+      console.log('Logging in...');
       await login(email, password, mfaPassCode);
     });
   });
