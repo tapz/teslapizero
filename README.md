@@ -187,8 +187,9 @@ v14.16.0
 
 ### Test
 
-1. `/opt/nodejs/bin/node /home/pi/teslapizero/index`
+1. `node index`
 2. Push the doorbell button
+3. Control-C to exit
    
 ### Install PM2 process manager to start the app when Raspberry Pi is started
 
