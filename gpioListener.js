@@ -12,7 +12,7 @@ process.on('SIGINT', _ => {
   }
 });
 
-function startListener(onGpio) {
+function startGpioListener(onGpio) {
   button = new Gpio(4, 'in', 'both');
   button.watch((err, value) => {
     if (err) {
@@ -27,5 +27,5 @@ function startListener(onGpio) {
 }
 
 module.exports = {
-  startListener
+  startGpioListener
 };

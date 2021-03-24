@@ -180,12 +180,10 @@ v14.16.0
 
 1. `cd teslapizero`
 2. `npm install --only=prod`
-3. `npm run login`
-4. Enter your Tesla e-mail, password and MFA code
-
-```
-
-```
+3. `npm rebuild`
+4. `npm run login`
+5. Enter your Tesla e-mail, password and MFA code
+6. Select your vehicle (VIN code and name displayed)
 
 ### Test
 
@@ -242,7 +240,8 @@ Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with
 1. `cd teslapizero`
 2. `git pull`
 3. `npm update`
-4. `pm2 restart teslapizero`
+4. `npm rebuild`
+5. `pm2 restart teslapizero`
 
 ---
 

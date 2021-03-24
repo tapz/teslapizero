@@ -86,6 +86,7 @@ rl.question('E-mail: ', email => {
     rl.stdoutMuted = false;
     rl.history = rl.history.slice(1);
     rl.question('MFA code: ', async mfaPassCode => {
+      rl.history = rl.history.slice(1);
       console.log('Logging in...');
       await login(email, password, mfaPassCode);
     });
