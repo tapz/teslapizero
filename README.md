@@ -194,16 +194,27 @@ v14.16.0
 ### Install PM2 process manager to start the app when Raspberry Pi is started
 
 1. `sudo npm install pm2 -g`
-2. `pm2 start index.js --name teslapizero`
-3. `pm2 startup systemd`
-4. `sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi`
-5. `pm2 save`
+2. `nano ~/.profile`
+3. Add this as the last line of the file:
 
-6. `pm2 list`, should print:
+```   
+PATH="/opt/nodejs/lib/node_modules/pm2/bin:$PATH"
 ```
-TODO
+
+4. Control-X, y
+5. `source ~/.profile`
+6. `pm2 start index.js --name teslapizero`
+7. `pm2 startup systemd`
+8. `sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi`
+9.  `pm2 save`
+
+10. `pm2 list`, should print:
 ```
-7. `pm2 show app`, should print:
+┌─────┬───────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id  │ name      │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+└─────┴───────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+```
+11. `pm2 show app`, should print:
 ```
 TODO
 ```
@@ -215,7 +226,7 @@ TODO
 
 ## **Check logs (in case the button does not work)**
 
-Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
+Login with SSH to the Pi
 
 `tail -1000 teslapizero/teslapizero.log`
 
@@ -227,7 +238,7 @@ and for unhandled errors:
 
 ## **If your password changes or the login expires**
 
-Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
+Login with SSH to the Pi
 
 1. `cd teslapizero`
 2. `npm run login`
@@ -236,7 +247,7 @@ Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with
 
 ## **Update to the most recent version**
 
-Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
+Login with SSH to the Pi
 
 1. `cd teslapizero`
 2. `git pull`
