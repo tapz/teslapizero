@@ -239,8 +239,8 @@ Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with
 
 Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
 
-1. `git clone https://github.com/tapz/teslapizero.git`
-2. `cd teslapizero`
+1. `cd teslapizero`
+2. `git pull`
 3. `npm update`
 4. `pm2 restart teslapizero`
 

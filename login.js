@@ -6,6 +6,8 @@ const fs = require('fs');
 const tesla = require('teslajs');
 
 async function login(username, password, mfaPassCode) {
+  let closeReadLine = true;
+
   try {
     const res = await tesla.loginAsync({
       username,
@@ -15,6 +17,7 @@ async function login(username, password, mfaPassCode) {
 
     if (res.error) {
       console.log(JSON.stringify(res.error));
+      rl.close();
       process.exit(1);
     }
 
@@ -36,7 +39,9 @@ async function login(username, password, mfaPassCode) {
       console.log(`${i}: ${vehicle.vin} - ${vehicle.display_name}`);
     });
 
+    closeReadLine = false;
     rl.question('Car index: ', index => {
+      rl.close();
       fs.writeFileSync('tokens.json', JSON.stringify({
         ...tokens,
         vehicleID: vehicles[index].id
@@ -45,7 +50,9 @@ async function login(username, password, mfaPassCode) {
   } catch (e) {
     log.error('Login failed: ', e);
   } finally {
-    rl.close();
+    if (closeReadLine) {
+      rl.close();
+    }
   }
 }
 
