@@ -8,9 +8,9 @@ const tesla = require('teslajs');
 async function login(username, password, mfaPassCode) {
   try {
     const res = await tesla.loginAsync({
-      username: '',
-      password: '',
-      mfaPassCode: ''
+      username,
+      password,
+      mfaPassCode
     });
 
     if (res.error) {
@@ -50,13 +50,34 @@ async function login(username, password, mfaPassCode) {
 }
 
 const readline = require('readline');
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
+const passwordTitle = 'Password: ';
+
+rl._writeToOutput = str => {
+  if (rl.stdoutMuted) {
+    if (str.startsWith(passwordTitle)) {
+      rl.output.write(passwordTitle);
+      for (let i = 0; i < str.length - passwordTitle.length; i++) {
+        rl.output.write('*');
+      }
+    } else {
+      rl.output.write('*');
+    }
+  } else {
+    rl.output.write(str);
+  }
+};
+
 rl.question('E-mail: ', email => {
-  rl.question('Password: ', password => {
+  rl.stdoutMuted = true;
+  rl.question(passwordTitle, password => {
+    rl.stdoutMuted = false;
+    rl.history = rl.history.slice(1);
     rl.question('MFA code: ', async mfaPassCode => {
       console.log('Logging in...');
       await login(email, password, mfaPassCode);

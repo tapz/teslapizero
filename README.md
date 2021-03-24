@@ -1,12 +1,15 @@
 # Tesla Charge Port Latch Opener
 Open Tesla charge port latch without Tesla button in the charger plug.
 
+**Note that the Windows specific steps have not been tested!**
+
 ---
 ## **HARDWARE**
 
 You need the following hardware components and equipments. The links are examples where you can buy the parts. You may find similar products elsewhere for lower price.
 
 * [Raspberry Pi Zero W with headers](https://www.partco.fi/en/raspberry-pi/raspberry-pi/20722-rpi-zero-wh.html)
+* [Raspberry Pi Zero case](https://shop.vadelmapii.com/tuote/raspberry-pi-zero-kotelo/)
 * [PIN header connectors](https://www.partco.fi/en/liittimet/piikkirima-liittimet/johtoliittimet-piikkirimaan/15756-harwin-1x1.html)
 * [Singlecore wire](https://www.partco.fi/en/kaapelitjohdot/yksisaeikeiset-kytkentaejohdot/14316-kaa-kj-1x06-pun.html) (1m)
 
@@ -30,6 +33,8 @@ Connect the memory card to your PC.
 
 Install and start [Raspberry Pi Imager](https://www.raspberrypi.org/software/)
 
+Make the following selections:
+
 ```
 Operating System: 
   Raspberry Pi (other)
@@ -41,13 +46,23 @@ Storage:
 Write
 ```
 
-Use Notepad in Windows or TextEdit in Mac. When saving files in Notepad, use quotes in the filename to prevent Notepad from adding the .txt extension.
+### Enable Secure Shell (SSH) login
 
-Write an empty text file named `"ssh"` to the root of the directory of the memory card.
+Remove and reinsert the memory card to the reader.
+
+Windows
+
+1. Open *Notepad*
+2. Save an empty file to the memory card (a drive called `boot`). Name the file as "ssh" (including the quotes to prevent Notepad from adding the .txt extension).
+
+Mac
+
+1. Open *Terminal*
+2. `touch /Volumes/boot/ssh`
 
 ### Setup Wi-Fi
 
-Create a text file named `"wpa_supplicant.conf"` to the root directory of the memory card with the following content. Replace `wifiName` and `wifiPassword` with the name and password of you Wi-Fi.
+Create a text file named `"wpa_supplicant.conf"` to the memory card with the following content. Replace `wifiName` and `wifiPassword` with the name and password of you Wi-Fi. Mac: `nano /Volumnes/boot/wpa_supplicant.conf`.
 
 ```
 country=FI
@@ -62,7 +77,7 @@ network={
 }
 ```
 
-Open the file `config.txt` in the root directory of the microSD card, and add the following line to the very bottom of the file and save:
+Open the file `config.txt` in the memory card, and add the following line to the very bottom of the file and save:
 
 ```
 dtoverlay=dwc2
@@ -70,33 +85,50 @@ dtoverlay=dwc2
 
 Open `cmdline.txt` and add the text `modules-load=dwc2,g_ether` after the word `rootwait`, and save the file. There are no linebreaks in this file.
 
+
+```
+console=serial0,115200 console=tty1 root=PARTUUID=e8af6eb2-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait modules-load=dwc2,g_ether quiet init=/usr/lib/raspi-config/init_resize.sh
+```
+
 ### Login to Pi
 
-If your PC is in the same Wi-Fi you configured to the Pi:
-  * Connect the power adapter to the port labeled "PWR" on the Pi.
-  
-If not,
-  * Connect the micro USB cable to the port labeled "USB" on the Pi. This will not work if you connect to the port labeled "PWR.". Connect the other end of the USB cable to your PC.
+1. Eject the card from your PC and insert it to the Pi.
+2. Connect the power adapter to the port labeled `PWR IN` on the Pi.
+3. Wait about 90 seconds until the green led in Pi stops flashing and stays solid green.
+4. Mac: Open *Terminal* app. Windows: Press `Windows+X` and click `Command Prompt (Admin)`
+5. `arp -na`
+6. Find a line with address `b8:27:eb`. Something like this:
 
+```
+? (192.168.1.230) at b8:27:eb:14:69:78 on en0 ifscope [ethernet]
+```
+
+1. Copy the IP address (it probably is something else than 192.168.1.230)
 
 Windows 
 
-* Install [Apple Bonjour Print Services](https://support.apple.com/kb/dl999?locale=en_US)
-
 * Install [Putty SSH client](https://www.putty.org)
 
-  * Enter raspberrypi (if Wi-Fi) or raspberrypi.local (if usb cable) as the host name you wish to connect to in Putty, and click Open.
+  * Enter `raspberrypi 192.168.1.230` as the host name you wish to connect to in Putty, and click Open.
 
   * Click Ok if you get a security warning alert.
 
 Mac
 
-* Terminal: `ssh raspberrypi`
+* Terminal: `ssh pi@192.168.1.230`
+* Answer `yes` to the following question, if you see one
 
-Enter login credentials:
+```
+The authenticity of host '192.168.1.230 (192.168.1.230)' can't be established.
+ECDSA key fingerprint is SHA256:Y6j2MbiAsPFb1Tvg2ilUbcokq4Y3Cd23IoeGYRn+W1o.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+```
 
-* username: `pi`
-* password: `raspberry`
+Enter password `raspberry`:
+
+```
+pi@192.168.1.230's password: raspberry
+```
 
 ### Change password
 
@@ -109,9 +141,17 @@ Enter login credentials:
 
 1. `sudo apt update`
 2. `sudo apt full-upgrade`
-3. `sudo apt install git`
+3. Answer `Y` if you see this question:
 
-4. `git --version`, should print something like
+```
+After this operation, 7,435 kB of additional disk space will be used.
+Do you want to continue? [Y/n] Y
+```
+
+4. Wait for several minutes...
+5. `sudo apt install git`
+
+6. `git --version`, should print something like
 ```
 git version 2.20.1
 ```
@@ -130,9 +170,10 @@ git version 2.20.1
 ```
 v14.16.0
 ```
-5. `npm -v`, should print something like:
+5. `npm install -g npm@latest`
+6. `npm -v`, should print something like:
 ```
-7.5.4
+7.7.4
 ```
 
 ### Login to Tesla API
@@ -140,40 +181,68 @@ v14.16.0
 1. `cd teslapizero`
 2. `npm install --only=prod`
 3. `npm run login`
+4. Enter your Tesla e-mail, password and MFA code
+
+```
+
+```
 
 ### Test
 
 1. `/opt/nodejs/bin/node /home/pi/teslapizero/index`
 2. Push the doorbell button
+   
+### Install PM2 process manager to start the app when Raspberry Pi is started
 
-### Make the app to start when Raspberry Pi is started
+1. `sudo npm install pm2 -g`
+2. `pm2 start index.js --name teslapizero`
+3. `pm2 startup systemd`
+4. `sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi`
+5. `pm2 save`
 
-1. `crontab -e`
-2. Choose `nano`
-3. Add to the end of the file:
+6. `pm2 list`, should print:
 ```
-@reboot /opt/nodejs/bin/node /home/pi/teslapizero/index &
+TODO
 ```
-4. control-x, y and enter
+7. `pm2 show app`, should print:
+```
+TODO
+```
 
 ### Restart Pi
 `sudo reboot`
 
 ---
 
-## **To check logs (in case the button does not work)**
+## **Check logs (in case the button does not work)**
 
 Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
 
-`tail teslapizero/teslapizero.log`
+`tail -1000 teslapizero/teslapizero.log`
+
+and for unhandled errors:
+
+`pm2 logs --lines 1000`
 
 ---
 
 ## **If your password changes or the login expires**
 
 Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
+
 1. `cd teslapizero`
 2. `npm run login`
+
+---
+
+## **Update to the most recent version**
+
+Login with SSH to host name raspberrypi (or raspberrypi.local if connecting with a usb cable instead of Wi-Fi)
+
+1. `git clone https://github.com/tapz/teslapizero.git`
+2. `cd teslapizero`
+3. `npm update`
+4. `pm2 restart teslapizero`
 
 ---
 
