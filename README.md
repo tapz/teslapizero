@@ -23,6 +23,10 @@ You need the following hardware components and equipments. The links are example
 
 * USB MicroSD memory card reader
 
+### Connect wires
+
+Connect wires from the doorbell push connectors to Pi `GPIO 8` (pin 24) and `GROUND` (pin 20). See [Raspberry Pi Pinout](https://pinout.xyz/pinout/pin24_gpio8).
+
 ---
 
 ## **SOFTWARE**

@@ -3,6 +3,8 @@
 
 const log = require('./logger');
 
+log.info('Starting...');
+
 const { openChargePort } = require('./teslaService');
 const { startGpioListener } = require('./gpioListener');
 

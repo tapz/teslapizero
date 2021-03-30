@@ -4,16 +4,14 @@
 const log = require('./logger');
 
 const Gpio = require('onoff').Gpio;
-let button = new Gpio(23, 'in', 'falling', { debounceTimeout: 100 });
-
-process.on('SIGINT', _ => {
-  if (button) {
-    button.unexport();
-  }
-});
 
 function startGpioListener(onGpio) {
-  button = new Gpio(4, 'in', 'both');
+  const button = new Gpio(8, 'in', 'falling', { debounceTimeout: 10 });
+
+  process.on('SIGINT', _ => {
+    button.unexport();
+  });
+
   button.watch((err, value) => {
     if (err) {
       log.error('Failed to start GPIO listener.', err);
@@ -23,9 +21,10 @@ function startGpioListener(onGpio) {
     onGpio();
   });
 
-  log.info('GPIO listener started.');
+  log.info('Listening GPIO 8.');
 }
 
 module.exports = {
   startGpioListener
 };
+
