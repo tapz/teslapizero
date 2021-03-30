@@ -2,8 +2,7 @@
 
 Unlock the Tesla charge port latch by pushing a doorbell button on the wall. The doorbell push button is wired to a Raspberry Pi Zero, which has some JavaScript code to send a request to the Tesla API in the cloud.
 
-https://www.youtube.com/watch?v=gBsD3nAcb6g
-[![Video](https://www.youtube.com/watch?v=gBsD3nAcb6g/0.jpg)](https://www.youtube.com/watch?v=gBsD3nAcb6g)
+[![Video](https://img.youtube.com/vi/gBsD3nAcb6g/0.jpg)](https://www.youtube.com/watch?v=gBsD3nAcb6g)
 
 **Note that the Windows specific steps have not been tested!**
 
