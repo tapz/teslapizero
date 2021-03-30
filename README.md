@@ -8,8 +8,6 @@ This video shows how it works:
 
 ![Setup](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9020_yqGA1LgZ_.jpeg)
 
-![Raspberry Pi Zero W](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_8987_j3jfry_zQ_d7j.jpeg)
-
 **Note: the Windows specific steps have not been tested!**
 
 ---
@@ -35,8 +33,6 @@ You need the following hardware components and equipments. The links are example
 ### Connect wires
 
 ![Doorbell button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9004_EK1uxsX_P.jpeg)
-
-![Pins](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9010_x8ENCGOEMLyI.jpeg)
 
 ![Connected button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9012_axd-B9zRvCQT.jpeg)
 
@@ -112,6 +108,8 @@ console=serial0,115200 console=tty1 root=PARTUUID=e8af6eb2-02 rootfstype=ext4 el
 ```
 
 ### Login to Pi
+
+![Raspberry Pi Zero W](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_8987_j3jfry_zQ_d7j.jpeg)
 
 1. Eject the card from your PC and insert it to the Pi.
 2. Connect the power adapter to the port labeled `PWR IN` on the Pi.
