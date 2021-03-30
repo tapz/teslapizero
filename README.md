@@ -201,13 +201,12 @@ v14.16.0
 PATH="/opt/nodejs/lib/node_modules/pm2/bin:$PATH"
 ```
 
-4. Control-X, y
+4. Save file: Control-X, y
 5. `source ~/.profile`
 6. `pm2 start index.js --name teslapizero`
 7. `pm2 startup systemd`
 8. `sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi`
 9.  `pm2 save`
-
 10. `pm2 list`, should print:
 ```
 ┌─────┬───────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐

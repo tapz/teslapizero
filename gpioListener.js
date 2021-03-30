@@ -4,7 +4,7 @@
 const log = require('./logger');
 
 const Gpio = require('onoff').Gpio;
-let button = new Gpio(4, 'in', 'falling', { debounceTimeout: 10 });
+let button = new Gpio(23, 'in', 'falling', { debounceTimeout: 100 });
 
 process.on('SIGINT', _ => {
   if (button) {
