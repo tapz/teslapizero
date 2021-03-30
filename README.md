@@ -1,5 +1,9 @@
-# Tesla Charge Port Latch Opener
-Open Tesla charge port latch without Tesla button in the charger plug.
+# Tesla Charge Port Latch Unlock
+
+Unlock the Tesla charge port latch by pushing a doorbell button on the wall. The doorbell push button is wired to a Raspberry Pi Zero, which has some JavaScript code to send a request to the Tesla API in the cloud.
+
+https://www.youtube.com/watch?v=gBsD3nAcb6g
+[![Video](https://www.youtube.com/watch?v=gBsD3nAcb6g/0.jpg)](https://www.youtube.com/watch?v=gBsD3nAcb6g)
 
 **Note that the Windows specific steps have not been tested!**
 
@@ -209,17 +213,20 @@ PATH="/opt/nodejs/lib/node_modules/pm2/bin:$PATH"
 5. `source ~/.profile`
 6. `pm2 start index.js --name teslapizero`
 7. `pm2 startup systemd`
-8. `sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi`
+8. Copy-paste and run the printed line. It should be like this:
+
+```
+sudo env PATH=$PATH:/opt/nodejs/bin /opt/nodejs/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+```
+
 9.  `pm2 save`
 10. `pm2 list`, should print:
 ```
-┌─────┬───────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
-│ id  │ name      │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
-└─────┴───────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
-```
-11. `pm2 show app`, should print:
-```
-TODO
+┌─────┬────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id  │ name           │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├─────┼────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0   │ teslapizero    │ default     │ 0.0.1   │ fork    │ 735      │ 7m     │ 0    │ online    │ 0%       │ 40.1mb   │ pi       │ disabled │
+└─────┴────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
 ### Restart Pi
