@@ -4,11 +4,11 @@ Unlock the Tesla charge port latch by pushing a doorbell button on the wall. The
 
 This video shows how it works:
 
-[![Video](https://img.youtube.com/vi/gBsD3nAcb6g/0.jpg)](https://www.youtube.com/watch?v=gBsD3nAcb6g)
+[![Video](https://img.youtube.com/vi/gBsD3nAcb6g/maxresdefault.jpg)](https://www.youtube.com/watch?v=gBsD3nAcb6g)
 
-[![Setup](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9020_yqGA1LgZ_.jpeg)
+![Setup](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9020_yqGA1LgZ_.jpeg)
 
-[![Raspberry Pi Zero W](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_8987_j3jfry_zQ_d7j.jpeg)
+![Raspberry Pi Zero W](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_8987_j3jfry_zQ_d7j.jpeg)
 
 **Note: the Windows specific steps have not been tested!**
 
@@ -34,13 +34,13 @@ You need the following hardware components and equipments. The links are example
 
 ### Connect wires
 
-[![Doorbell button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9004_EK1uxsX_P.jpeg)
+![Doorbell button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9004_EK1uxsX_P.jpeg)
 
-[![Pins](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9010_x8ENCGOEMLyI.jpeg)
+![Pins](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9010_x8ENCGOEMLyI.jpeg)
 
-[![Connected button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9012_axd-B9zRvCQT.jpeg)
+![Connected button](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9012_axd-B9zRvCQT.jpeg)
 
-[![Heat shrinking tubes](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9013_pGUoyt4tL.jpeg)
+![Heat shrinking tubes](https://ik.imagekit.io/ym7mmsjf12q/Tesla_button/IMG_9013_pGUoyt4tL.jpeg)
 
 Connect wires from the doorbell push connectors to Pi `GPIO 8` (pin 24) and `GROUND` (pin 20). See [Raspberry Pi Pinout](https://pinout.xyz/pinout/pin24_gpio8). If the pin header connectors are too bulky, just leave the black plastic part out, bend the metal part and cover it with a heat shrinking tube.
 
